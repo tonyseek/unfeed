@@ -2,7 +2,7 @@ from flask import Flask
 from brownant import Brownant
 from werkzeug.utils import import_string
 
-from .ext import db
+from .ext import sentry, db
 
 
 blueprints = [
@@ -22,6 +22,7 @@ def create_app():
     app.config.from_envvar('UNFEED_CONFIG', silent=True)
 
     # extensions
+    sentry.init_app(app)
     db.init_app(app)
 
     # blueprints
