@@ -1,3 +1,5 @@
+import copy
+
 from brownant import Site, Dinergate
 from brownant.pipeline import (TextResponseProperty, ElementTreeProperty,
                                XPathTextProperty)
@@ -59,8 +61,20 @@ class QdailyArticle(Dinergate):
 
     @cached_property
     def content(self):
+        content_etree = copy.deepcopy(self.content_etree)
+        for node in content_etree.getiterator():
+            for attr_name in ('href', 'src'):
+                if attr_name not in node.attrib:
+                    continue
+                value = node.attrib[attr_name]
+                if value.startswith('//'):
+                    continue
+                if not value.startswith('/'):
+                    continue
+                node.attrib[attr_name] = '/'.join([
+                    self.URL_BASE, value.lstrip('/')])
         html = tostring(
-            self.content_etree, pretty_print=True, encoding='unicode')
+            content_etree, pretty_print=True, encoding='unicode')
         return html.strip()
 
     @cached_property
