@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, make_response
 
 from unfeed.models.site import Site
 from unfeed.models.offline import OfflineIndex, OfflineArticle
@@ -34,3 +34,10 @@ def article(site_id, article_id):
         return redirect(stricted_url)
 
     return render_template('article.html', site=site, article=article)
+
+
+@bp.route('/robots.txt')
+def robots():
+    response = make_response(render_template('robots.txt'))
+    response.headers['Content-Type'] = 'text/plain'
+    return response
