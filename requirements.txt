@@ -1,1 +1,6 @@
+brownant==0.1.5
+lxml==3.3.5
 pip-tools==0.3.4
+requests==2.3.0
+six==1.6.1
+Werkzeug==0.9.4
