@@ -10,6 +10,7 @@ MarkupSafe==0.23
 pip-tools==0.3.4
 py==1.4.20
 pytest==2.5.2
+python-dateutil==2.2
 requests==2.3.0
 simpleflake==0.1.5
 six==1.6.1

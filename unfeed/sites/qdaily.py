@@ -1,6 +1,9 @@
 from brownant import Site, Dinergate
-from brownant.pipeline import TextResponseProperty, ElementTreeProperty
+from brownant.pipeline import (TextResponseProperty, ElementTreeProperty,
+                               XPathTextProperty)
 from werkzeug.utils import cached_property
+from lxml.html import tostring
+from dateutil.parser import parse as parse_datetime
 
 from .pipeline import DictionaryProperty, DictionaryValueProperty
 
@@ -33,3 +36,33 @@ class QdailyIndex(Dinergate):
             xpath_bd + '//div[@class="excerpt"]/a/text()')
 
         return zip(category, title, url, description)
+
+
+@site.route('qdaily.com', '/display/articles/<int:item_id>')
+class QdailyArticle(Dinergate):
+
+    URL_BASE = QdailyIndex.URL_BASE
+    URL_TEMPLATE = '{self.URL_BASE}/display/articles/{self.item_id}'
+
+    text_response = TextResponseProperty()
+    etree = ElementTreeProperty()
+
+    title = XPathTextProperty(xpath='//h2[@class="main-title"]/text()')
+    subtitle = XPathTextProperty(xpath='//h4[@class="sub-title"]/text()')
+    author = XPathTextProperty(
+        xpath='//*[contains(@class, "author")]/span[@class="name"]/text()')
+    content_etree = XPathTextProperty(
+        xpath='//*[contains(@class, "article-detail")]/div[@class="bd"]',
+        pick_mode='first')
+    published_text = XPathTextProperty(
+        xpath='//*[contains(@class, "author")]/span[@class="date"]/text()')
+
+    @cached_property
+    def content(self):
+        html = tostring(
+            self.content_etree, pretty_print=True, encoding='unicode')
+        return html.strip()
+
+    @cached_property
+    def published(self):
+        return parse_datetime(self.published_text.strip())
