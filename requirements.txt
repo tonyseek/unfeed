@@ -7,6 +7,8 @@ Jinja2==2.7.2
 lxml==3.3.5
 MarkupSafe==0.23
 pip-tools==0.3.4
+py==1.4.20
+pytest==2.5.2
 requests==2.3.0
 six==1.6.1
 SQLAlchemy==0.9.4
