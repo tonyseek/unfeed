@@ -30,3 +30,13 @@ class EntityModel(db.Model):
     @cached_property
     def creation_time(self):
         return datetime.datetime.fromtimestamp(self.simpleflake.timestamp)
+
+    @classmethod
+    def get_or_create(cls, auto_commit=True, **data):
+        exists = cls.query.filter_by(**data).first()
+        if exists is None:
+            exists = cls(**data)
+            db.session.add(exists)
+            if auto_commit:
+                db.session.commit()
+        return exists
