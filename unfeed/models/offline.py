@@ -12,6 +12,7 @@ class OfflineIndex(EntityModel):
 
     category_id = db.Column(db.ForeignKey(Category.id), nullable=False)
     category = db.relationship(Category)
+    site_id = db.Column(db.ForeignKey(Site.id), nullable=False)
     title = db.Column(db.Unicode(60), nullable=False)
     relative_url = db.Column(db.Unicode(255), nullable=False, unique=True)
     description = db.Column(db.UnicodeText, nullable=False)
@@ -32,20 +33,16 @@ class OfflineIndex(EntityModel):
 
             # generates instance
             category = Category.get_or_create(name=category_name, site=site)
-            instance = cls(
-                category=category, title=title, relative_url=relative_url,
-                description=description)
 
             # checks exists
-            exists = cls.query.filter_by(
-                relative_url=instance.relative_url).first()
-            if exists:
-                exists.category = category
-                exists.title = title
-                exists.description = description
-                yield exists
-            else:
-                yield instance
+            instance = cls.query.filter_by(relative_url=relative_url).first()
+            if not instance:
+                instance = cls(relative_url=relative_url)
+            instance.category = category
+            instance.title = title
+            instance.description = description
+            instance.site_id = site.id
+            yield instance
 
     @property
     def site(self):
