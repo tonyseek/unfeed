@@ -18,6 +18,6 @@ def deploy():
     with cd(remote_repo):
         sudo('git pull --ff-only origin master', user=remote_user)
         run('pip install -r requirements.txt')
-        get('production/*.cfg', 'production/%(basename)s.last.cfg')
+        get('production/*.cfg', 'production/%(basename)s.cfg.last')
         put('production/*.cfg', 'production/', use_sudo=True)
     sudo('supervisorctl restart %s' % remote_proc)
