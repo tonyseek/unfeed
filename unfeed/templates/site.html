@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>{{ site.name }}</h2>
+  <ol>
+    {% for index in indexes %}
+    <li>
+      <h3>
+        <strong data-id="{{ index.category.id }}">【{{ index.category.name }}】</strong>
+        {{ index.title }}
+      </h3>
+      <p>
+        {{ index.description }}
+        <a href="{{ url_for('.article', site_id=site.id, article_id=index.article.id) }}">[查看]</a>
+      </p>
+    </li>
+    {% endfor %}
+  </ol>
+
+  <div>‹ <a href="{{ url_for('.home') }}">Home</a></div>
+{% endblock %}
