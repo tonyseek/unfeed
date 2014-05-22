@@ -62,7 +62,8 @@ class OfflineArticle(EntityModel):
     published = db.Column(db.DateTime, nullable=False)
     related_index_id = db.Column(
         db.ForeignKey(OfflineIndex.id), nullable=False)
-    related_index = db.relationship(OfflineIndex)
+    related_index = db.relationship(
+        OfflineIndex, backref=db.backref('article', uselist=False))
     subtitle = db.Column(db.Unicode(60))
     author = db.Column(db.Unicode(60))
     site_id = db.Column(db.ForeignKey(Site.id), nullable=False)

@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>
+    【{{ article.related_index.category.name }}】
+    {{ article.title }}
+  </h2>
+  {% if article.subtitle %}
+  <h3>{{ article.subtitle }}</h3>
+  {% endif %}
+  <div>
+    <div>{{ article.author or '未知作者' }} / {{ article.published.date() }}</div>
+    <blockquote>
+      {{ article.content|safe }}
+    </blockquote>
+  </div>
+  <div>
+    ‹ <a href="{{ url_for('.home') }}">Home</a>
+    ‹ <a href="{{ url_for('.site', site_id=site.id) }}">{{ site.name }}</a>
+  </div>
+{% endblock %}
