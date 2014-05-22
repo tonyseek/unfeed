@@ -7,6 +7,7 @@ from .ext import db
 
 blueprints = [
     'home',
+    'feed',
 ]
 
 brownant_sites = [

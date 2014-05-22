@@ -6,6 +6,7 @@
     <li>
       {{ site.name }}
       <a href="{{ url_for('.site', site_id=site.id) }}">〔查看〕</a>
+      <a href="{{ url_for('feed.atom', site_id=site.id) }}">〔Atom Feed〕</a>
     </li>
     {% endfor %}
   </ul>
