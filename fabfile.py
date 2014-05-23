@@ -1,8 +1,8 @@
 from fabric.api import cd, run, get, put, sudo, hosts
 
 
-remote_host = 'szulabs.org'
-remote_repo = '/srv/unfeed.szulabs.org'
+remote_host = 'unfeed.wolege.ca'
+remote_repo = '/srv/unfeed.wolege.ca'
 remote_user = 'unfeed'
 remote_proc = 'unfeed:*'
 
