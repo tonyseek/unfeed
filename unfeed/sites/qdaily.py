@@ -7,6 +7,7 @@ from werkzeug.utils import cached_property
 from lxml.html import tostring
 from dateutil.parser import parse as parse_datetime
 
+from unfeed.utils.etree import eliminate_relative_urls
 from .pipeline import DictionaryProperty, DictionaryValueProperty
 
 
@@ -61,18 +62,8 @@ class QdailyArticle(Dinergate):
 
     @cached_property
     def content(self):
-        content_etree = copy.deepcopy(self.content_etree)
-        for node in content_etree.getiterator():
-            for attr_name in ('href', 'src'):
-                if attr_name not in node.attrib:
-                    continue
-                value = node.attrib[attr_name]
-                if value.startswith('//'):
-                    continue
-                if not value.startswith('/'):
-                    continue
-                node.attrib[attr_name] = '/'.join([
-                    self.URL_BASE, value.lstrip('/')])
+        content_etree = eliminate_relative_urls(
+            self.content_etree, self.URL_BASE, without_side_effect=True)
         html = tostring(
             content_etree, pretty_print=True, encoding='unicode')
         return html.strip()
