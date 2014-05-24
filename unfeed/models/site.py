@@ -43,8 +43,10 @@ class Category(EntityModel):
 @db_created.connect_via(db)
 def initial_sites(sender):
     sites = [
-        Site(name='好奇心日报', start_url='http://qdaily.com/',
-             dinergate_name='qdaily:QdailyIndex'),
+        {'name': '好奇心日报',
+         'start_url': 'http://qdaily.com/',
+         'dinergate_name': 'qdaily:QdailyIndex'},
     ]
-    db.session.add_all(sites)
+    for site in sites:
+        Site.get_or_create(auto_commit=False, **site)
     db.session.commit()
