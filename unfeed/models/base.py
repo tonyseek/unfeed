@@ -12,10 +12,11 @@ class EntityModel(db.Model):
 
     __abstract__ = True
 
-    def __repr__(self):
+    def __repr__(self, skip_attrs=None):
         cls_name = self.__class__.__name__
         attrs = ('%s=%r' % (attr.key, attr.value)
-                 for attr in inspect(self).attrs)
+                 for attr in inspect(self).attrs
+                 if not skip_attrs or attr.key not in skip_attrs)
         joined_attrs = ', '.join(attrs)
         return '%s(%s)' % (cls_name, joined_attrs)
 

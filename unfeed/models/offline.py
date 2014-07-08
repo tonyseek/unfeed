@@ -69,6 +69,10 @@ class OfflineArticle(EntityModel):
     site_id = db.Column(db.ForeignKey(Site.id), nullable=False)
     item_id = db.Column(db.Unicode(60))
 
+    def __repr__(self):
+        return super(OfflineArticle, self).__repr__(
+            skip_attrs={'related_index'})
+
     @property
     def url(self):
         return self.related_index.url
