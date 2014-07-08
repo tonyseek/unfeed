@@ -19,8 +19,8 @@ def site(site_id):
     indexes = OfflineIndex.query \
         .filter_by(site_id=site.id) \
         .order_by(OfflineIndex.id.desc()) \
-        .all()
-    indexes = [index for index in indexes if index.article]
+        .limit(200)
+    indexes = (index for index in indexes if index.article)
     return render_template('site.html', site=site, indexes=indexes)
 
 
