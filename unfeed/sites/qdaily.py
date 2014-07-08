@@ -28,15 +28,15 @@ class QdailyIndex(Dinergate):
 
     def __iter__(self):
         xpath_base = '//div[@class="article-container"]'
-        xpath_hd = xpath_base + '//div[@class="content"]'
-        xpath_bd = xpath_base + '//div[contains(@class, "hover-content")]'
+        xpath_hd = xpath_base + '//div[@class="hd"]'
+        xpath_bd = xpath_base + '//div[@class="bd"]'
 
         category = self.etree.xpath(
             xpath_hd + '//p[@class="category"]/a/text()')
         title = self.etree.xpath(xpath_bd + '//h2/a/text()')
         url = self.etree.xpath(xpath_bd + '//h2/a/@href')
         description = self.etree.xpath(
-            xpath_bd + '//div[@class="excerpt"]/a/text()')
+            xpath_bd + '//div[@class="excerpt"]//text()')
 
         return zip(category, title, url, description)
 
